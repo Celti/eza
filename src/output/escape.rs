@@ -45,7 +45,22 @@ pub fn escape(
     }
 }
 
-const HYPERLINK_ESCAPE_CHARS: &AsciiSet = &CONTROLS.add(b' ');
+// From the URL spec:
+// The path percent-encode set is the query percent-encode set and U+003F (?), U+005E (^),
+// U+0060 (`), U+007B ({), and U+007D (}).
+// The query percent-encode set is the C0 control percent-encode set and U+0020 SPACE,
+// U+0022 ("), U+0023 (#), U+003C (<), and U+003E (>).
+const HYPERLINK_ESCAPE_CHARS: &AsciiSet = &CONTROLS
+    .add(b' ')
+    .add(b'"')
+    .add(b'#')
+    .add(b'<')
+    .add(b'>')
+    .add(b'?')
+    .add(b'^')
+    .add(b'`')
+    .add(b'{')
+    .add(b'}');
 const HYPERLINK_OPENING_START: &str = "\x1B]8;;";
 const HYPERLINK_OPENING_END: &str = "\x1B\x5C";
 // Combination of both above tags
